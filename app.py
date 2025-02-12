@@ -5,11 +5,13 @@ import plotly.express as px
 import pandas as pd
 import os
 import geopandas as gpd
+from whitenoise import WhiteNoise 
+import gunicorn
 
 
 tile_url = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
 
-df = pd.read_csv('occurrence.csv', sep='\t')
+df = pd.read_csv('static/occurrence.csv', sep='\t')
 cols = ['vernacularName', 
         'specificEpithet',
         'dateIdentified',
@@ -23,24 +25,25 @@ df = df[cols]
 data = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.decimalLongitude, df.decimalLatitude))
 data = data.__geo_interface__
 
-def add_whales_to_layer():
-    point_to_layer = assign("""function(feature, latlng){
-    const flag = L.icon({iconUrl: `./orcas.png`, iconSize: [25, 20]});
-    return L.Marker(latlng, {icon:flag};  // render a simple circle marker
-    }""")
+# def add_whales_to_layer():
+#     point_to_layer = assign("""function(feature, latlng){
+#     const flag = L.icon({iconUrl: `./orcas.png`, iconSize: [25, 20]});
+#     return L.Marker(latlng, {icon:flag};  // render a simple circle marker
+#     }""")
 
 # use_icon = assign("""function(feature, latlng){
 # const i = L.icon({iconUrl: `https://cdn4.iconfinder.com/data/icons/standard-free-icons/139/Checkin01-512.png`, iconSize: [40, 40]});
 # return L.marker(latlng, {icon: i});
 # }""")
 use_icon = assign("""function(feature, latlng){
-const i = L.icon({iconUrl: `https://img.icons8.com/color/48/orca.png`, iconSize: [5, 5]});
+const i = L.icon({iconUrl: `https://img.icons8.com/color/48/orca.png`, iconSize: [30, 30]});
 return L.marker(latlng, {icon: i});
 }""")
                   
 
 markers = [dl.Marker(position=[row["decimalLatitude"], row["decimalLongitude"]]) for i, row in df.iterrows()]
-app = Dash()
+app = Dash(__name__)
+server = app.server
 geojson = dl.GeoJSON(data=data, pointToLayer=use_icon, id='geo')
 map = dl.Map([
                 dl.TileLayer(
@@ -51,8 +54,8 @@ map = dl.Map([
                 #dl.LayerGroup(markers)
                 geojson
                 ],
-                    center=[49,-120],
-                    zoom=7,
+                    center=[49,-123],
+                    zoom=9,
                     style={'height': '100%'},
                     id='main_map',
                     dragging=True,
