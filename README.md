@@ -1,6 +1,6 @@
 Web App that displays an interactive map for Orcas 
 
-https://orcas.onrender.com (deployed but 3-5 minute startup time - don't refresh, just wait)
+https://orcas.onrender.com (deployed but 3-5 minute startup time - open in new tab & don't refresh, just wait patiently for the server to start)
 
 Alternatively to run on your local computer:
 
