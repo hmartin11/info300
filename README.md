@@ -7,6 +7,7 @@ Alternatively to run on your local computer:
 Requirements:
 
 install `python 3.10`
+install git
 
 in terminal:
 
