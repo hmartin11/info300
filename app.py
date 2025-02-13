@@ -25,16 +25,7 @@ df = df[cols]
 data = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.decimalLongitude, df.decimalLatitude))
 data = data.__geo_interface__
 
-# def add_whales_to_layer():
-#     point_to_layer = assign("""function(feature, latlng){
-#     const flag = L.icon({iconUrl: `./orcas.png`, iconSize: [25, 20]});
-#     return L.Marker(latlng, {icon:flag};  // render a simple circle marker
-#     }""")
 
-# use_icon = assign("""function(feature, latlng){
-# const i = L.icon({iconUrl: `https://cdn4.iconfinder.com/data/icons/standard-free-icons/139/Checkin01-512.png`, iconSize: [40, 40]});
-# return L.marker(latlng, {icon: i});
-# }""")
 use_icon = assign("""function(feature, latlng){
 const i = L.icon({iconUrl: `https://img.icons8.com/color/48/orca.png`, iconSize: [30, 30]});
 return L.marker(latlng, {icon: i});
@@ -51,7 +42,7 @@ map = dl.Map([
 
                 dl.LocateControl(
                     locateOptions={'enableHighAccuracy': True}), 
-                #dl.LayerGroup(markers)
+              
                 geojson
                 ],
                     center=[49,-123],
@@ -110,20 +101,12 @@ app.layout = html.Div(
     Input('years', 'value'),
     
 )
-# @callback(
-#     Output(component_id='geo', component_property='data'),
-#     Input('years', 'value'),
-#     Input(component_id='years', component_property='value')
-# )
+
 def update_graph(col_chosen, selected_year):
     filtered_df = df[df.year == selected_year]
     fig = px.histogram(filtered_df, x=col_chosen, title="Count of Orcas By Year and Region", y='specificEpithet', histfunc='count')
     return fig
-# def update_map(selected_year):
-#     df2 = df[df.year == selected_year]
-#     data = gpd.GeoDataFrame(df2, geometry=gpd.points_from_xy(df2.decimalLongitude, df2.decimalLatitude))
-#     data = data.__geo_interface__
-#     return dl.GeoJSON(data=data, pointToLayer=use_icon, id='geo')
+   return dl.GeoJSON(data=data, pointToLayer=use_icon, id='geo')
 
 
 
