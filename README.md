@@ -21,6 +21,7 @@ in terminal:
 
 copy and paste local host URL into browser
 
+(the $ 's are not part of the commands, its to indicate terminal) 
 
 
 <img width="1468" alt="image" src="https://github.com/user-attachments/assets/2e5e88c1-569c-433f-a80e-c8b9543e9e19" />
